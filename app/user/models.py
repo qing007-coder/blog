@@ -1,3 +1,14 @@
 from django.db import models
+from app.base import model
 
-# Create your models here.
+
+class User(model.BaseModel):
+    account = models.CharField(max_length=200)
+    password = models.CharField(max_length=200)
+
+    class Meta:
+        db_table = 'user'
+        managed = True
+        verbose_name = 'User'
+        verbose_name_plural = 'Users'
+
