@@ -13,6 +13,7 @@ class Article(model.BaseModel):
     title = models.CharField(max_length=200)
     content = models.TextField()
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    status = models.CharField(max_length=200, default=False)
 
     objects = ArticleManager()
 

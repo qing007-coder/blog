@@ -2,6 +2,7 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+
 from app.article.models import Article
 from app.article.serializer import ArticleSerializer
 
@@ -13,12 +14,12 @@ class ArticleView(ViewSet):  # 改为继承ViewSet
     @action(detail=True, methods=['get'])
     def get_article_by_id(self, request, pk=None):
         article = Article.objects.get_article_by_id(id=pk)
-        serializer = ArticleSerializer(article)
-        return Response(serializer.data)
+        return Response(ArticleSerializer(article, many=False).data)
 
     @action(detail=False, methods=['get'])
-    def list(self, request):
+    def get_list(self, request):
         page = int(request.query_params.get('page', 1))
         size = int(request.query_params.get('size', 10))
-        articles = Article.objects.get_articles_list(page=page, size=size)
+        category = request.query_params.get('category', None)
+        articles = Article.objects.get_articles_list(page=page, size=size, category=category)
         return Response(ArticleSerializer(articles, many=True).data)
