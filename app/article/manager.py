@@ -1,14 +1,27 @@
 from django.db import models
-from .constant import ARTICLE_STATUS_PUBLISHED
+from pandas.core.ops import arithmetic_op
+
+from .constant import *
 
 class ArticleManager(models.Manager):
     def get_articles_list(self, page, size, category):
-        queryset = self.filter(status=ARTICLE_STATUS_PUBLISHED)
+        queryset = self.filter(status=ARTICLE_STATUS_PUBLIC)
         # 如果 category 存在，则添加 category 的过滤条件
         if category:
             queryset = queryset.filter(category=category)
         # 进行分页操作
         return queryset[(page - 1) * size: page * size]
+
+    def create_article(self, title, content, category):
+        article = self.model(
+            title=title,
+            content=content,
+            status=ARTICLE_STATUS_PUBLIC,
+            category=category,
+        )
+
+        article.save()
+        return article
 
     def get_article_by_id(self, id):
         try:

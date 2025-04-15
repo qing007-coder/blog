@@ -83,7 +83,7 @@ DATABASES = {
         'USER': 'root',      # 数据库用户名
         'PASSWORD': '040824',  # 数据库密码
         'HOST': 'localhost',    # 数据库主机
-        'PORT': '3306',         # 数据库端口
+        'PORT': '3307',         # 数据库端口
     }
 }
 
