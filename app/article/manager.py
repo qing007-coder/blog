@@ -45,3 +45,22 @@ class ArticleManager(models.Manager):
             return True
         return False
 
+class CategoryManager(models.Manager):
+    def create_category(self, name):
+        category = self.model(name=name)
+        category.save()
+
+        return category
+
+    def delete_category(self, id):
+        try:
+            category =  self.get(id=id)
+            category.delete()
+            return True
+        except self.model.DoesNotExist:
+            return False
+
+    def get_list(self):
+        categories = self.filter()
+
+        return categories

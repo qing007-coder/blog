@@ -1,8 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.decorators import action
-from app.article.models import Article
-from app.article.serializer import ArticleSerializer
+from app.article.models import Article, Category
+from app.article.serializer import ArticleSerializer, CategorySerializer
 
 
 class ArticleView(viewsets.ViewSet):
@@ -82,3 +82,31 @@ class ArticleView(viewsets.ViewSet):
             return Response({"detail": "Article deleted."}, status=status.HTTP_200_OK)
 
         return Response({"detail": "Article not found."}, status=status.HTTP_404_NOT_FOUND)
+
+class CategoryView(viewsets.ViewSet):
+    @action(detail=False, methods=['post'])
+    def create_category(self, request):
+        serializer = CategorySerializer(data=request.data)
+        if serializer.is_valid():
+            try:
+                name = serializer.validated_data.get('name')
+                category = Category.objects.create_category(name=name)
+                serializer = CategorySerializer(category)
+                return Response(serializer.data)
+            except Exception as e:
+                return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    @action(detail=False, methods=['post'])
+    def delete_category(self, request):
+        id = request.data.get('id')
+        isDeleted = Category.objects.delete_category(id)
+        if isDeleted:
+            return Response({"detail": "Category deleted."}, status=status.HTTP_200_OK)
+
+        return Response({"detail": "Category not found."}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, methods=['get'])
+    def get_list(self, request):
+        categories = Category.objects.get_list()
+        serializer = CategorySerializer(instance=categories, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

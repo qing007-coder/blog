@@ -1,10 +1,12 @@
 from django.db import models
 
-from app.article.manager import ArticleManager
+from app.article.manager import ArticleManager, CategoryManager
 from app.base import model
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
+
+    objects = CategoryManager()
 
     def __str__(self):
         return self.name
