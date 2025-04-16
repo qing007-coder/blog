@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+TOKEN_EXPIRATION_SECONDS = 60 * 60 * 24 * 3
 
 # Application definition
 
