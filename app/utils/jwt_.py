@@ -3,6 +3,7 @@ import datetime
 from dateutil import tz
 from blog import settings
 
+
 def encode_token(**kwargs):
     payload = {
         'exp': datetime.datetime.now(tz=tz.UTC) + datetime.timedelta(seconds=settings.TOKEN_EXPIRATION_SECONDS),
@@ -16,11 +17,16 @@ def encode_token(**kwargs):
 
     return token
 
+
 def decode_token(token):
     try:
         # 尝试解密 token
         decoded_payload = jwt.decode(token, settings.SECRET_KEY, algorithms='HS256')
         return decoded_payload
+    except jwt.ExpiredSignatureError:
+        raise
+    except jwt.InvalidTokenError:
+        raise
     except Exception as e:
         # 处理其他未知异常
-        return f"error: {str(e)}"
+        raise Exception(f"error: {str(e)}")

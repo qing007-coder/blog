@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from app.article.models import Article, Category
 from app.article.serializer import ArticleSerializer, CategorySerializer
+from .middleware import custom_authenticate
 
 
 class ArticleView(viewsets.ViewSet):
@@ -41,6 +42,7 @@ class ArticleView(viewsets.ViewSet):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=False, methods=['post'])
+    @custom_authenticate
     def publish_article(self, request):
         serializer = ArticleSerializer(data=request.data)
         if serializer.is_valid():
@@ -57,6 +59,7 @@ class ArticleView(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['post'])
+    @custom_authenticate
     def update_article(self, request):
         serializer = ArticleSerializer(data=request.data)
         if serializer.is_valid():
@@ -74,6 +77,7 @@ class ArticleView(viewsets.ViewSet):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=['post'])
+    @custom_authenticate
     def delete_article(self, request):
         id = request.data.get('id')
 
@@ -85,6 +89,7 @@ class ArticleView(viewsets.ViewSet):
 
 class CategoryView(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
+    @custom_authenticate
     def create_category(self, request):
         serializer = CategorySerializer(data=request.data)
         if serializer.is_valid():
@@ -97,6 +102,7 @@ class CategoryView(viewsets.ViewSet):
                 return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     @action(detail=False, methods=['post'])
+    @custom_authenticate
     def delete_category(self, request):
         id = request.data.get('id')
         isDeleted = Category.objects.delete_category(id)
