@@ -5,12 +5,13 @@ from blog import settings
 
 
 def encode_token(**kwargs):
+    print(kwargs.items())
     payload = {
         'exp': datetime.datetime.now(tz=tz.UTC) + datetime.timedelta(seconds=settings.TOKEN_EXPIRATION_SECONDS),
     }
 
     for field, value in kwargs.items():
-        setattr(payload, field, value)
+        payload[field] = value
 
     print(payload)
     token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
