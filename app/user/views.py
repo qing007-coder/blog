@@ -4,7 +4,7 @@ from .models import User
 from app.utils.response import response
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserView(viewsets.ModelViewSet):
     @action(detail=False, methods=['post'])
     def login(self, request):
         account = request.data.get('account')
