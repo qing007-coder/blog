@@ -3,6 +3,7 @@ from pandas.core.ops import arithmetic_op
 
 from .constant import *
 
+
 class ArticleManager(models.Manager):
     def get_articles_list(self, page, size, category):
         queryset = self.filter(status=ARTICLE_STATUS_PUBLIC)
@@ -45,6 +46,7 @@ class ArticleManager(models.Manager):
             return True
         return False
 
+
 class CategoryManager(models.Manager):
     def create_category(self, name):
         category = self.model(name=name)
@@ -54,7 +56,7 @@ class CategoryManager(models.Manager):
 
     def delete_category(self, id):
         try:
-            category =  self.get(id=id)
+            category = self.get(id=id)
             category.delete()
             return True
         except self.model.DoesNotExist:

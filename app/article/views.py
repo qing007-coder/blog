@@ -14,7 +14,6 @@ class ArticleView(viewsets.ViewSet):
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
     @action(detail=True, methods=['get'])
     def get_article_by_id(self, request, pk=None):
         try:
@@ -81,11 +80,12 @@ class ArticleView(viewsets.ViewSet):
     def delete_article(self, request):
         id = request.data.get('id')
 
-        isDeleted = Article.objects.delete_article(id)
-        if isDeleted:
+        is_deleted = Article.objects.delete_article(id)
+        if is_deleted:
             return Response({"detail": "Article deleted."}, status=status.HTTP_200_OK)
 
         return Response({"detail": "Article not found."}, status=status.HTTP_404_NOT_FOUND)
+
 
 class CategoryView(viewsets.ViewSet):
     @action(detail=False, methods=['post'])
@@ -105,8 +105,8 @@ class CategoryView(viewsets.ViewSet):
     @custom_authenticate
     def delete_category(self, request):
         id = request.data.get('id')
-        isDeleted = Category.objects.delete_category(id)
-        if isDeleted:
+        is_deleted = Category.objects.delete_category(id)
+        if is_deleted:
             return Response({"detail": "Category deleted."}, status=status.HTTP_200_OK)
 
         return Response({"detail": "Category not found."}, status=status.HTTP_400_BAD_REQUEST)

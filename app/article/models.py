@@ -3,6 +3,7 @@ from django.db import models
 from app.article.manager import ArticleManager, CategoryManager
 from app.base import model
 
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
 
@@ -10,6 +11,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Article(model.BaseModel):
     title = models.CharField(max_length=200)
@@ -23,4 +25,4 @@ class Article(model.BaseModel):
         return self.title
 
     class Meta:
-        ordering = ['-created_at'] # 按照这个排序 没有减号就是升序
+        ordering = ['-created_at']  # 按照这个排序 没有减号就是升序
